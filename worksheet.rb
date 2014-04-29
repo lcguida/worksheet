@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'data_mapper'
+require 'net/ldap'
 
 set :server, %w[thin mongrel webrick]
 #set :bind, '192.168.1.2'
@@ -50,6 +51,19 @@ class User
 	property :login, String
 	property :firstname, String
 	property :lastname, String
+
+
+
+
+
+
+
+
+
+
+
+
+
 end
 
 class Issue
@@ -68,11 +82,16 @@ end
 
 get '/worksheet' do 
 	@time_entries = []
-	@user = get_user(params[:login])
-	DataMapper.repository(:default){ @time_entries += get_time_entries(@user[:id], params[:from], params[:to]) }
-	DataMapper.repository(:pd){ @time_entries += get_time_entries(@user[:pd_id], params[:from], params[:to], true) }
-	@time_entries = @time_entries.group_by{ |te| te.spent_on}
-	erb :worksheet
+		if authenticate_user(params[:login], params[:password])
+			@user = get_user(params[:login])
+			DataMapper.repository(:default){ @time_entries += get_time_entries(@user[:id], params[:from], params[:to]) }
+			DataMapper.repository(:pd){ @time_entries += get_time_entries(@user[:pd_id], params[:from], params[:to], true) }
+			@time_entries = @time_entries.group_by{ |te| te.spent_on}
+			erb :worksheet
+		else
+			params[:alert] = "Usuário e senha inválidos"
+			erb :index
+		end
 end
 
 #Metodos auxiliares
@@ -99,3 +118,73 @@ def get_user(login)
 	user[:pd_id] = user_pd.id if user_pd
 	return user	
 end
+
+
+###################################################################################
+def authenticate_user(login, password)
+  profiles = [ ["fwork", 1], ["marketing", 2], ["p_optidata", 3], ["p_rfms", 4], ["webmaster", 5] ]
+
+  user = nil
+  user_profiles = []
+  ldap_login = "uid=#{login},ou=users,dc=fiberwork,dc=net"
+  treebase = "dc=fiberwork,dc=net"
+  
+  require 'net/ldap'
+  ldap =
+  #Configura conexao base do servidor LDAP
+  Net::LDAP.new(
+    :host => "192.168.1.2",
+    :port => 389,
+    :base => treebase, 
+    :auth => { :method => :simple, :username => ldap_login, :password => password.to_s}
+  )
+
+  #Se encontrou usuario, inicia o set      
+  return ldap.bind
+    #   uidnumber = nil
+
+    #   #Busca o uid do login
+    #   filter = Net::LDAP::Filter.eq("uid", login)
+    #   #ldap.search(:base => LDAP_TREEBASE, :filter => filter, :attributes => ["uidnumber"]) { |entry| uidnumber = entry.uidnumber.first }
+      
+    #   user = User.find_by_login(login)
+
+    #   unless user
+    #     user = 
+    #     User.create(
+    #       :name => login,
+    #       :login => login,
+    #       :password => login,
+    #       :email => login,
+    #       :notes => "LDAP User"
+    #     )
+    #   end
+      
+    #   #user.id = uidnumber.to_i
+
+    #   #Percorre cada perfil/grupo pra verificar se ha o login/usuario como membro do grupo
+    #   profiles.each do |p|
+    #     profile = p[0].to_s #nome do grupo
+    #     val = p[1].to_i #valor do grupo
+    #     #Gera a arvore base do diretorio do grupo da iteracao
+    #     # if (ENV['RAILS_ENV']=="prodution")
+    #       treebase = "cn=#{profile},ou=groups," + LDAP_TREEBASE
+    #     # else
+    #     #   treebase = "cn=#{profile},ou=groups," + LDAP_TREEBASE
+    #     # end
+    #     ldap.search(:base => treebase) do |entry|
+
+
+    #       logger.debug "========================================="
+    #       entry.each do |attribute, values|
+    #         logger.debug("#{attribute} => #{values}")
+    #       end
+
+    #       entry.memberuid.each do |member|
+    #         user_profiles << val if member.to_s == login.to_s #Se o usuario e membro, adiciona o val do profile em seu array
+    #       end
+    #     end
+    #   end
+    # user_profiles << 0 unless (ENV['RAILS_ENV']=="prodution")#Comment this line to get LDAP profiles
+    # return user, user_profiles
+  end

@@ -13,11 +13,24 @@
 </head>
 <body>
 	<div class="large-4 large-centered columns" style="margin-top: 30px;">
+		<% if params[:alert] %>
+			<div data-alert class="alert-box alert round">
+			  	<%= params[:alert] %>
+			  <a href="#" class="close">&times;</a>
+			</div>
+		<% end %>
 		<form class="custom" action="/worksheet">
 			<div class="row">
 				<div class="large-12 columns">
 					<label> Login: 
 						<input type="text" autofocus required name="login">
+					</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-12 columns">
+					<label> Password: 
+						<input type="password" autofocus required name="password">
 					</label>
 				</div>
 			</div>
