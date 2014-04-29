@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8"/>
+	<title>Worksheet</title>
+
+	<!-- Foundation -->
+	<link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/foundation.css">
+	<script src="js/vendor/modernizr.js"></script>
+
+	<style>
+		.custom td, th {
+			text-align: center;
+		}
+	</style>
+
+</head>
+<body>
+	<div class="large-12 large-centered columns" style="margin-top: 15px;">
+		<h1>Folha de Horas</h1>
+		<h3> Funcionário: <%= @user[:name] %> </h3>
+		
+			<% @time_entries.each do |date, time_entries| %>
+			<table class="custom">
+				<tr>
+					<td colspan="6"> <%= date.strftime("%d/%m/%Y") %> </td>
+				</tr> 
+				<tr>					
+					<th>Horas</th>
+					<th>Issue</th>
+					<th>Projeto</th>
+					<th>Comentários</th>
+				</tr>
+				<% total = 0 %>
+				<% time_entries.each do |time_entry| %>
+					<tr>
+						<td><%= time_entry.hours %></td>
+						<td>
+						<% if time_entry.issue %>
+							<a href="<%= time_entry.get_issue_link %>"><%= time_entry.issue.subject%></a>
+						<% end %>
+						</td>
+						<td><a href="<%= time_entry.get_project_link %>"><%= time_entry.project.name %></a></td>
+						<td><%= time_entry.comments %></td>
+					</tr>
+					<% total += time_entry.hours.round(2) %>
+				<% end %>
+				<tr>
+					<td colspan="6">Total do Dia: <%= total.round(2) %> </td>					
+				</tr>
+			<% end %>
+		</table>
+	</div>
+
+</body>
+</html>

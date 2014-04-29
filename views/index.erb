@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8"/>
+	<title>Worksheet</title>
+
+	<!-- Foundation -->
+	<link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/foundation.css">
+	<script src="js/vendor/modernizr.js"></script>
+
+</head>
+<body>
+	<div class="large-4 large-centered columns" style="margin-top: 30px;">
+		<form class="custom" action="/worksheet">
+			<div class="row">
+				<div class="large-12 columns">
+					<label> Login: 
+						<input type="text" autofocus required name="login">
+					</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-6 columns">
+					<label> From: 
+						<input type="date" name="from" required>
+					</label>	
+				</div>
+				
+				<div class="large-6 columns">
+					<label> To: 
+						<input type="date" name="to" required>
+					</label>	
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-6 large-centered columns">					
+					<button type="submit" class="nice blue radius button">Gerar Worksheet</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<!-- Foundation configs -->
+	<script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script> $(document).foundation(); </script>
+</body>
+</html>
