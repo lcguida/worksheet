@@ -2,8 +2,12 @@ require 'rubygems'
 require 'sinatra'
 require 'data_mapper'
 
+set :server, %w[thin mongrel webrick]
+#set :bind, '192.168.1.2'
+#set :port, 3060
+
 #Loga os acessos ao banco
-DataMapper::Logger.new($stdout, :debug)
+#DataMapper::Logger.new($stdout, :debug)
 
 #Configura o banco de dados 
 DataMapper.setup(:default, 'mysql://root:123456@192.168.1.2/redmine')
