@@ -20,7 +20,7 @@ url = "mysql://#{config['database']['user']}:#{config['database']['password']}@#
 
 #Configura o banco de dados 
 DataMapper.setup(:default, url + config['default_redmine']['db_name'])
-DataMapper.setup(:default, url + config['pd_redmine']['db_name'])
+DataMapper.setup(:pd, url + config['pd_redmine']['db_name'])
 
 #Mapeamento das tabelas:
 class TimeEntry
