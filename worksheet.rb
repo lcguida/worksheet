@@ -2,17 +2,25 @@ require 'rubygems'
 require 'sinatra'
 require 'data_mapper'
 require 'net/ldap'
+require "bundler/setup"
 
+#Carrega as configurações do config.yml:
+config = YAML.load_file('config.yml')
+
+#Configurações do Sinatra
 set :server, %w[thin mongrel webrick]
-#set :bind, '192.168.1.2'
-#set :port, 3060
+set :bind, config['database']['bind']
+set :port, config['database']['port']
 
-#Loga os acessos ao banco
+#Descomentar para ativar log do banco de dados. 
 #DataMapper::Logger.new($stdout, :debug)
 
+#URL básica do banco de dados
+url = "mysql://#{config['database']['user']}:#{config['database']['password']}@#{config['database']['host']}/"
+
 #Configura o banco de dados 
-DataMapper.setup(:default, 'mysql://root:123456@192.168.1.2/redmine')
-DataMapper.setup(:pd, 'mysql://root:123456@192.168.1.2/redmine_pd')
+DataMapper.setup(:default, url + config['default_redmine']['db_name'])
+DataMapper.setup(:default, url + config['pd_redmine']['db_name'])
 
 #Mapeamento das tabelas:
 class TimeEntry
@@ -20,19 +28,22 @@ class TimeEntry
 	property :id, Serial
 	property :hours, Float
 	property :comments, String
-	property :activity_id, Integer #Require the Activity Table
 	property :spent_on, DateTime
 
 	belongs_to :user
 	belongs_to :project
 	belongs_to :issue
+	# belongs_to :activity
 
+	#Flag para indicar que a issue é do Redmine P&D
 	attr_accessor :pd
 
+	#Constói o link para a issue
 	def get_issue_link
 		"http://192.168.1.2:30#{pd ? 40 : 30}/issues/#{issue.id}"
 	end
 
+	#Constói o link para o projeto
 	def get_project_link
 		"http://192.168.1.2:30#{pd ? 40 : 30}/projects/#{project.identifier}"
 	end
@@ -51,19 +62,6 @@ class User
 	property :login, String
 	property :firstname, String
 	property :lastname, String
-
-
-
-
-
-
-
-
-
-
-
-
-
 end
 
 class Issue
@@ -71,6 +69,11 @@ class Issue
 	property :id, Serial
 	property :subject, String
 end	
+
+# class Activity
+# 	include DataMapper::Resource
+# 	property :id, Serial
+# end	
 
 #Indica o fim da configuração do banco:
 DataMapper.finalize
@@ -80,7 +83,7 @@ get '/' do
 	erb :index
 end
 
-get '/worksheet' do 
+post '/worksheet' do 
 	@time_entries = []
 		if authenticate_user(params[:login], params[:password])
 			@user = get_user(params[:login])
