@@ -11,48 +11,58 @@
 	<script src="js/vendor/modernizr.js"></script>
 
 	<style>
-		.custom td, th {
-			text-align: center;
+		.custom { width: 100%; }
+		.custom th, td{
+			text-align: center;	
+			border: 1px solid black;
+			padding: 3px;
 		}
 	</style>
 
 </head>
 <body>
-	<div class="large-12 large-centered columns" style="margin-top: 15px;">
-		<h1>Folha de Horas</h1>
-		<h3> Funcionário: <%= @user[:name] %> </h3>
-		
-			<% @time_entries.each do |date, time_entries| %>
-			<table class="custom">
-				<tr>
-					<td colspan="6"> <%= date.strftime("%d/%m/%Y") %> </td>
-				</tr> 
-				<tr>					
-					<th>Horas</th>
-					<th>Issue</th>
-					<th>Projeto</th>
-					<th>Comentários</th>
-				</tr>
-				<% total = 0 %>
-				<% time_entries.each do |time_entry| %>
-					<tr>
-						<td><%= time_entry.hours %></td>
-						<td>
-						<% if time_entry.issue %>
-							<a href="<%= time_entry.get_issue_link %>"><%= time_entry.issue.subject%></a>
-						<% end %>
-						</td>
-						<td><a href="<%= time_entry.get_project_link %>"><%= time_entry.project.name %></a></td>
-						<td><%= time_entry.comments %></td>
-					</tr>
-					<% total += time_entry.hours.round(2) %>
-				<% end %>
-				<tr>
-					<td colspan="6">Total do Dia: <%= total.round(2) %> </td>					
-				</tr>
-			<% end %>
-		</table>
+	<div class="large-12 large-centered columns" style="margin-top: 15px; text-align: center;">
+		<h2>Folha de Horas</h2>
+		<h4> Funcionário: <%= @user[:name] %> </h4>
+		<h4> <%= "#{@from_date} até #{@to_date}" %> </h4>
+		<% @time_entries.each do |date, time_entries| %>
+			<div class="row">
+				<div class="large-12 large-centered columns">
+					<table class="custom">
+						<thead>
+							<tr>
+								<th colspan="6"> <%= date.strftime("%d/%m/%Y") %> </th>
+							</tr> 
+							<tr>					
+								<th>Horas</th>
+								<th>Issue</th>
+								<th>Projeto</th>
+								<th>Comentários</th>
+							</tr>
+						</thead>
+						<% total = 0 %>
+						<tbody>
+							<% time_entries.each do |time_entry| %>
+								<tr>
+									<td><%= time_entry.hours %></td>
+									<td>
+										<% if time_entry.issue %>
+											<a href="<%= time_entry.get_issue_link %>"><%= time_entry.issue.subject%></a>
+										<% end %>
+									</td>
+									<td><a href="<%= time_entry.get_project_link %>"><%= time_entry.project.name %></a></td>
+									<td><%= time_entry.comments %></td>
+								</tr>
+								<% total += time_entry.hours.round(2) %>
+							<% end %>
+							<tr>
+								<td colspan="6">Total do Dia: <%= total.round(2) %> </td>					
+							</tr>
+							<% end %>
+						</tbody>
+					</table>
+				</div>
+			</div>
 	</div>
-
 </body>
 </html>
