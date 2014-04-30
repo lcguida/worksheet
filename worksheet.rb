@@ -92,7 +92,7 @@ post '/worksheet' do
 			@time_entries = @time_entries.group_by{ |te| te.spent_on}
 			erb :worksheet
 		else
-			params[:alert] = "Usuário e senha inválidos"
+			params[:alert] = "Usu&aacute;rio e senha inv&aacute;lidos"
 			erb :index
 		end
 end
