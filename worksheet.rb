@@ -10,7 +10,7 @@ config = YAML.load_file('config.yml')
 #Configurações do Sinatra
 set :server, %w[thin mongrel webrick]
 set :bind, config['database']['bind']
-set :port, config['database']['port']
+set :port, config['database']['port'].to_i
 
 #Descomentar para ativar log do banco de dados. 
 #DataMapper::Logger.new($stdout, :debug)
@@ -84,6 +84,11 @@ get '/' do
 end
 
 post '/worksheet' do 
+
+	#Format the date to display:
+	@to_date = DateTime.strptime(params[:to],'%Y-%m-%d').strftime('%d/%m/%Y')
+	@from_date = DateTime.strptime(params[:from],'%Y-%m-%d').strftime('%d/%m/%Y')
+	
 	@time_entries = []
 		if authenticate_user(params[:login], params[:password])
 			@user = get_user(params[:login])
