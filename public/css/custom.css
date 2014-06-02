@@ -1,0 +1,17 @@
+.week-table { 
+	width: 100%; 
+	margin-top: 10px; 
+}
+.week-table th,td{
+	text-align: center;	
+	padding: 3px;
+}
+th.weekday {
+	width: 8%;
+}
+td.right {
+	text-align: right;
+}
+tr.footer {
+	background-color: #D2F1FD;
+}
