@@ -25,7 +25,38 @@
 		<h2>Folha de Horas</h2>
 		<h4> Funcionário: <%= @user[:name] %> </h4>
 		<h4> <%= "#{@from_date} até #{@to_date}" %> </h4>
-		<% @time_entries.each do |date, time_entries| %>
+		
+		<!-- Weekly -->
+		<div class="row">
+
+			<div class="large-12 large-centered columns">
+			
+				<table>
+					<thead>
+						<tr>
+							<th colspan="6"> Semana: </th>	
+						</tr>	
+						<tr>
+							<th>Issue</th>
+							<th> Seg </th>
+							<th> Ter </th>
+							<th> Qua </th>
+							<th> Qui </th>
+							<th> Sex </th>
+						</tr>	
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+	
+		<!--  -->
+		<% total_hours = 0 %>
+		<% @time_entries.sort.each do |date, time_entries| %>
 			<div class="row">
 				<div class="large-12 large-centered columns">
 					<table class="custom">
@@ -58,6 +89,7 @@
 							<tr>
 								<td colspan="6">Total do Dia: <%= total.round(2) %> </td>					
 							</tr>
+							<% total_hours += total %>
 							<% end %>
 						</tbody>
 					</table>
