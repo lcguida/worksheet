@@ -58,6 +58,17 @@
 	<!-- Foundation configs -->
 	<script src="js/vendor/jquery.js"></script>
   <script src="js/foundation.min.js"></script>
-  <script> $(document).foundation(); </script>
+  <script> $(document).foundation();
+	  	yepnope({ /* included with Modernizr */
+		  test : Modernizr.inputtypes.date,
+		  nope : {
+		    'css': '/path-to-your-css/jquery-ui-1.10.3.custom.min.css',
+		    'js': '/path-to-your-js/jquery-ui-1.10.3.datepicker.min.js'
+		  },
+		  callback: { // executed once files are loaded
+		    'js': function() { $('input[type=date]').datepicker({dateFormat: "yy-mm-dd"}); } // default HTML5 format
+		  }
+		});
+  </script>
 </body>
 </html>
