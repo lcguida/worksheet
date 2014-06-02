@@ -1,11 +1,11 @@
 server:
-  port: 3060
-  bind: 192.168.1.2
+  port: #server port
+  bind: #server binding address
 database:
-  user: root
-  password: 
-  host: localhost
+  user: #database username (is assumed the MySQL instance is the same)
+  password: #database password
+  host: #database host
 default_redmine:
-  db_name: redmine
+  db_name: #default redmine database name
 pd_redmine:
-  db_name: redmine_pd
+  db_name: #P&D instance database name
