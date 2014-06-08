@@ -4,108 +4,67 @@ require 'data_mapper'
 require 'net/ldap'
 require "bundler/setup"
 
-
-
-#Carrega as configurações do config.yml:
+#Carrega arquivos de configurações:
 config = YAML.load_file('config.yml')
+database = YAML.load_file('database.yml')
+repositories = []
 
 #Configurações do Sinatra
 set :server, %w[thin mongrel webrick]
-set :bind, config['database']['bind']
+set :bind, config['bind'] ||= "localhost"
 
 #Descomentar para ativar log do banco de dados. 
-#DataMapper::Logger.new($stdout, :debug)
+DataMapper::Logger.new($stdout, :debug)
 
-#URL básica do banco de dados
-url = "mysql://#{config['database']['user']}:#{config['database']['password']}@#{config['database']['host']}/"
-
-#Configura o banco de dados 
-DataMapper.setup(:default, url + config['default_redmine']['db_name'])
-DataMapper.setup(:pd, url + config['pd_redmine']['db_name'])
-
-#Require models
-Dir.glob(File.expand_path("../models/project.rb", __FILE__)).each do |file|
-  require file
+#Configura DataMappers com as informações do arquivo database.yml
+database.each do |database, configs|
+	repositories << database.to_sym
+	DataMapper.setup(database.to_sym, configs)
 end
 
-# class Activity
-# 	include DataMapper::Resource
-# 	property :id, Serial
-# end
+#Importa os models
+Dir.glob(File.expand_path("../models/*.rb", __FILE__)).each do |file|
+  require file
+end
 
 #Indica o fim da configuração do banco:
 DataMapper.finalize
 
 #Mapeamento das rotas
 get '/' do
+	@users = User.all(:login.not => "")
 	erb :index
 end
 
-get '/teste' do 
-	erb :teste
-end
-
 post '/worksheet' do
-	#Format the date to display:
+	#Formatação da Data
 	@to_date = DateTime.strptime(params[:to],'%Y-%m-%d').strftime('%d/%m/%Y')
 	@from_date = DateTime.strptime(params[:from],'%Y-%m-%d').strftime('%d/%m/%Y')
 
+	@user = User.first({login: params[:login]}) 
+	user_login = params[:user_login] == "myself" ? @user.login : params[:user_login]
+
 	@time_entries = []
-		if authenticate_user(params[:login], params[:password])
-			@user = get_user(params[:login])
-			DataMapper.repository(:default){ @time_entries += get_time_entries(@user[:id], params[:from], params[:to]) }
-			DataMapper.repository(:pd){ @time_entries += get_time_entries(@user[:pd_id], params[:from], params[:to], true) }
-			@time_entries = @time_entries.group_by{ |te| te.spent_on}
-			erb :worksheet
+		if @user.authenticate(params[:password]) #TODO: Pesquisar como evitar SQL Injection no Sinatra
+			puts "#{@user.login} != #{user_login}: #{(@user.login != user_login).to_s}"
+			puts "AND: #{@user.admin.to_s}"
+			if (@user.login != user_login && @user.admin) || @user.login == user_login
+
+				#TODO: como posso pegar a lista de respositótios direto do DataMapper
+				repositories.each do |repository|		
+					DataMapper.repository(repository){ @time_entries += TimeEntry.get_users_time_entry(user_login, params[:from], params[:to]) }
+				end
+				@time_entries = @time_entries.group_by{ |te| te.spent_on}
+				erb :worksheet
+			else
+				params[:alert] = "Voc&ecirc; n&acirc; tem permiss&acirc;o para visualizar as horas do usu&agrave;io #{user_login}"
+				@users = User.all(:login.not => "") #TODO: Como posso redirecionar para '/' passando parametros
+				erb :index
+			end
 		else
 			params[:alert] = "Usu&aacute;rio e senha inv&aacute;lidos"
+			@users = User.all(:login.not => "")
 			erb :index
 		end
 end
 
-#Metodos auxiliares
-def get_time_entries(id, from, to, pd=false)
-	time_entries = TimeEntry.all(user_id: id, :spent_on.gte => from, :spent_on.lte => to)
-	time_entries.each do |te|
-		te.project
-		te.user
-		te.issue
-		te.project
-		te.pd = pd
-	end
-end
-
-def get_user(login)
-	user_default = {}
-	user_pd = {}
-	DataMapper.repository(:default){ user_default = User.first(login: login)}
-	DataMapper.repository(:pd){ user_pd = User.first(login: login)}
-	user = {}
-	user[:login] = user_default.login
-	user[:name] = "#{user_default.firstname} #{user_default.lastname}"
-	user[:id] = user_default.id
-	user[:pd_id] = user_pd.id if user_pd
-	return user	
-end
-
-def authenticate_user(login, password)
-  profiles = [ ["fwork", 1], ["marketing", 2], ["p_optidata", 3], ["p_rfms", 4], ["webmaster", 5] ]
-
-  user = nil
-  user_profiles = []
-  ldap_login = "uid=#{login},ou=users,dc=fiberwork,dc=net"
-  treebase = "dc=fiberwork,dc=net"
-  
-  require 'net/ldap'
-  ldap =
-  #Configura conexao base do servidor LDAP
-  Net::LDAP.new(
-    :host => "192.168.1.2",
-    :port => 389,
-    :base => treebase, 
-    :auth => { :method => :simple, :username => ldap_login, :password => password.to_s}
-  )
-
-  #Se encontrou usuario, inicia o set      
-  return ldap.bind
-end

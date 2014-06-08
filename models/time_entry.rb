@@ -1,25 +1,30 @@
 class TimeEntry
 	include DataMapper::Resource
+
+	#Campos do banco
 	property :id, Serial
 	property :hours, Float
 	property :comments, String
 	property :spent_on, DateTime
 
+	#Associações
 	belongs_to :user
 	belongs_to :project
 	belongs_to :issue
-	# belongs_to :activity
+	belongs_to :activity
 
-	#Flag para indicar que a issue é do Redmine P&D
-	attr_accessor :pd
+	#Busca as Time Entries de um determinado usuário
+	def self.get_users_time_entry(login, start_date, end_date)
+		conditions = {:user => {:login => login}, :spent_on.gte => start_date, :spent_on.lte => end_date}
+		entries = self.all(conditions)
 
-	#Constói o link para a issue
-	def get_issue_link
-		"http://192.168.1.2:30#{pd ? 40 : 30}/issues/#{issue.id}"
-	end
-
-	#Constói o link para o projeto
-	def get_project_link
-		"http://192.168.1.2:30#{pd ? 40 : 30}/projects/#{project.identifier}"
+		#Carrega as dependências. Pesquisei e não existe
+		#um mode de fazer eager loading.
+		entries.each do |entry|
+			entry.project
+			entry.user
+			entry.issue
+			entry.project
+		end
 	end
 end
