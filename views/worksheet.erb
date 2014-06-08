@@ -23,38 +23,9 @@
 <body>
 	<div class="large-12 large-centered columns" style="margin-top: 15px; text-align: center;">
 		<h2>Folha de Horas</h2>
-		<h4> Funcionário: <%= @user[:name] %> </h4>
+		<h4> Funcionário: <%= @user.name %> </h4>
 		<h4> <%= "#{@from_date} até #{@to_date}" %> </h4>
 		
-		<!-- Weekly -->
-		<div class="row">
-
-			<div class="large-12 large-centered columns">
-			
-				<table>
-					<thead>
-						<tr>
-							<th colspan="6"> Semana: </th>	
-						</tr>	
-						<tr>
-							<th>Issue</th>
-							<th> Seg </th>
-							<th> Ter </th>
-							<th> Qua </th>
-							<th> Qui </th>
-							<th> Sex </th>
-						</tr>	
-					</thead>
-					<tbody>
-						
-					</tbody>
-				</table>
-
-			</div>
-
-		</div>
-	
-		<!--  -->
 		<% total_hours = 0 %>
 		<% @time_entries.sort.each do |date, time_entries| %>
 			<div class="row">
@@ -78,10 +49,10 @@
 									<td><%= time_entry.hours %></td>
 									<td>
 										<% if time_entry.issue %>
-											<a href="<%= time_entry.get_issue_link %>"><%= time_entry.issue.subject%></a>
+											<%= time_entry.issue.subject%>
 										<% end %>
 									</td>
-									<td><a href="<%= time_entry.get_project_link %>"><%= time_entry.project.name %></a></td>
+									<td><%= time_entry.project.name %></td>
 									<td><%= time_entry.comments %></td>
 								</tr>
 								<% total += time_entry.hours.round(2) %>

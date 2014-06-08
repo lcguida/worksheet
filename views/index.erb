@@ -20,6 +20,18 @@
 			</div>
 		<% end %>
 		<form class="custom" action="/worksheet" method="post">
+		<div class="row">
+				<div class="large-12 columns">
+					<label> User: 
+						<select name="user_login">
+							<option value="myself" >&lt;me&gt;</option>
+							<% @users.each do |user| %>
+								<option value="<%= user.login %>"><%= user.name %></option>
+							<% end %>
+						</select>
+					</label>
+				</div>
+			</div>
 			<div class="row">
 				<div class="large-12 columns">
 					<label> Login: 

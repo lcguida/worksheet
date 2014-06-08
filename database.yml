@@ -1,0 +1,13 @@
+default:
+  adapter: postgres
+  hostname: "localhost"
+  user: "postgres"
+  password: "123456"
+  database: "redmine"
+
+redmine2:
+  adapter: postgres
+  hostname: "localhost"
+  user: "postgres"
+  password: "123456"
+  database: "redmine2"
