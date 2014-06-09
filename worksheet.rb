@@ -17,10 +17,7 @@ set :bind, config['bind'] ||= "localhost"
 DataMapper::Logger.new($stdout, :debug)
 
 #Configura DataMappers com as informações do arquivo database.yml
-database.each do |database, configs|
-	repositories << database.to_sym
-	DataMapper.setup(database.to_sym, configs)
-end
+database.each { |database, configs| DataMapper.setup(database.to_sym, configs) }
 
 #Importa os models
 Dir.glob(File.expand_path("../models/*.rb", __FILE__)).each do |file|
@@ -49,10 +46,10 @@ post '/worksheet' do
 			puts "#{@user.login} != #{user_login}: #{(@user.login != user_login).to_s}"
 			puts "AND: #{@user.admin.to_s}"
 			if @user.login == user_login || @user.admin
-
-				#TODO: como posso pegar a lista de respositótios direto do DataMapper
-				repositories.each do |repository|		
-					DataMapper.repository(repository){ @time_entries += TimeEntry.get_users_time_entry(user_login, params[:from], params[:to]) }
+				DataMapper::Repository.adapaters.keys.each do |repository|		
+					DataMapper.repository(repository){ 
+						@time_entries += TimeEntry.get_users_time_entry(user_login, params[:from], params[:to]) 
+					}
 				end
 				@time_entries = @time_entries.group_by{ |te| te.spent_on}
 				erb :worksheet
