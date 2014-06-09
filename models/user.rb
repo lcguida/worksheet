@@ -16,4 +16,8 @@ class User
 	def name
 		"#{firstname} #{lastname}"
 	end
+
+	def self.get_all_users
+		User.all(:login.not => "", :order => :firstname.asc)
+	end
 end
