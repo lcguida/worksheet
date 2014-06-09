@@ -6,15 +6,15 @@ A little Sinatra app that centralizes logged time entries from different redmine
 
 ### Como usar? ###
 
-1. Clone the project
+* Clone the project
 
 ```
 git clone https://github.com/lcguida/worksheet.git
 ```
 
-2. `bundle isntall`
+* `bundle isntall`
 
-3. Create a database.yml file with at least one 'default' database (pointing to a existing redmine database):
+* Create a `database.yml` file with at least one `'default'` database (pointing to a existing redmine database):
 
 ```ruby
 #database.yml
@@ -38,7 +38,7 @@ another-redmine:
 
 ```
 
-3. Create a config.yml as following:
+* Create a `config.yml` as following:
 
 ```ruby
 #config.yml
