@@ -48,7 +48,7 @@ post '/worksheet' do
 		if @user.authenticate(params[:password]) #TODO: Pesquisar como evitar SQL Injection no Sinatra
 			puts "#{@user.login} != #{user_login}: #{(@user.login != user_login).to_s}"
 			puts "AND: #{@user.admin.to_s}"
-			if (@user.login != user_login && @user.admin) || @user.login == user_login
+			if @user.login == user_login || @user.admin
 
 				#TODO: como posso pegar a lista de respositótios direto do DataMapper
 				repositories.each do |repository|		
