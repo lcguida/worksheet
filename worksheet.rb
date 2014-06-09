@@ -32,7 +32,7 @@ DataMapper.finalize
 
 #Mapeamento das rotas
 get '/' do
-	@users = User.all(:login.not => "")
+	@users = User.get_all_users
 	erb :index
 end
 
@@ -58,12 +58,12 @@ post '/worksheet' do
 				erb :worksheet
 			else
 				params[:alert] = "Voc&ecirc; n&acirc; tem permiss&acirc;o para visualizar as horas do usu&agrave;io #{user_login}"
-				@users = User.all(:login.not => "") #TODO: Como posso redirecionar para '/' passando parametros
+				@users = User.get_all_users #TODO: Como posso redirecionar para '/' passando parametros
 				erb :index
 			end
 		else
 			params[:alert] = "Usu&aacute;rio e senha inv&aacute;lidos"
-			@users = User.all(:login.not => "")
+			@users = User.get_all_users
 			erb :index
 		end
 end
