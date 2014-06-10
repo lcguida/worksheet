@@ -47,4 +47,4 @@ bind: <server_bind_address>
 
 ```
 
-4. Execute: `bundle execu rackup -p <port>`
+4. Execute: `bundle exec rackup -p <port>`
