@@ -1,8 +1,13 @@
 #Minitest
 require 'minitest/autorun'
 require 'minitest/pride'
-#aplicação
+require 'rack/test'
+
+#Application
 require_relative '../worksheet.rb'
+
+#Rack::Test includes request simulation methods
+include Rack::Test::Methods
 
 def app
   Sinatra::Application
