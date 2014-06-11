@@ -1,0 +1,45 @@
+<!-- Renders Time Entries Table -->
+<h2>Folha de Horas</h2>
+<h4> Funcionário: <%= @user.name %> </h4>
+<h4> <%= "#{@from_date} até #{@to_date}" %> </h4>
+
+<% total_hours = 0 %>
+<% @time_entries.sort.each do |date, time_entries| %>
+	<div class="row">
+		<div class="large-12 large-centered columns">
+			<table class="custom">
+				<thead>
+					<tr>
+						<th colspan="6"> <%= date.strftime("%d/%m/%Y") %> </th>
+					</tr> 
+					<tr>					
+						<th>Horas</th>
+						<th>Issue</th>
+						<th>Projeto</th>
+						<th>Comentários</th>
+					</tr>
+				</thead>
+				<% total = 0 %>
+				<tbody>
+					<% time_entries.each do |time_entry| %>
+						<tr>
+							<td><%= time_entry.hours %></td>
+							<td>
+								<% if time_entry.issue %>
+									<%= time_entry.issue.subject%>
+								<% end %>
+							</td>
+							<td><%= time_entry.project.name %></td>
+							<td><%= time_entry.comments %></td>
+						</tr>
+						<% total += time_entry.hours.round(2) %>
+					<% end %>
+					<tr>
+						<td colspan="6">Total do Dia: <%= total.round(2) %> </td>					
+					</tr>
+					<% total_hours += total %>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>

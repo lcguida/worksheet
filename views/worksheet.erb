@@ -8,64 +8,16 @@
 	<!-- Foundation -->
 	<link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/foundation.css">
+  <link rel="stylesheet" href="css/custom.css">
 	<script src="js/vendor/modernizr.js"></script>
-
-	<style>
-		.custom { width: 100%; }
-		.custom th, td{
-			text-align: center;	
-			border: 1px solid black;
-			padding: 3px;
-		}
-	</style>
 
 </head>
 <body>
 	<div class="large-12 large-centered columns" style="margin-top: 15px; text-align: center;">
-		<h2>Folha de Horas</h2>
-		<h4> Funcionário: <%= @user.name %> </h4>
-		<h4> <%= "#{@from_date} até #{@to_date}" %> </h4>
+
+		<!-- Render Time Entries Table partial -->
+		<%= erb :time_entries_table %>
 		
-		<% total_hours = 0 %>
-		<% @time_entries.sort.each do |date, time_entries| %>
-			<div class="row">
-				<div class="large-12 large-centered columns">
-					<table class="custom">
-						<thead>
-							<tr>
-								<th colspan="6"> <%= date.strftime("%d/%m/%Y") %> </th>
-							</tr> 
-							<tr>					
-								<th>Horas</th>
-								<th>Issue</th>
-								<th>Projeto</th>
-								<th>Comentários</th>
-							</tr>
-						</thead>
-						<% total = 0 %>
-						<tbody>
-							<% time_entries.each do |time_entry| %>
-								<tr>
-									<td><%= time_entry.hours %></td>
-									<td>
-										<% if time_entry.issue %>
-											<%= time_entry.issue.subject%>
-										<% end %>
-									</td>
-									<td><%= time_entry.project.name %></td>
-									<td><%= time_entry.comments %></td>
-								</tr>
-								<% total += time_entry.hours.round(2) %>
-							<% end %>
-							<tr>
-								<td colspan="6">Total do Dia: <%= total.round(2) %> </td>					
-							</tr>
-							<% total_hours += total %>
-							<% end %>
-						</tbody>
-					</table>
-				</div>
-			</div>
 	</div>
 </body>
 </html>

@@ -6,12 +6,14 @@
 	text-align: center;	
 	padding: 3px;
 }
-th.weekday {
-	width: 8%;
+th.weekday { width: 8%; }
+td.right { text-align: right; }
+tr.footer { background-color: #D2F1FD; }
+.custom { width: 100%; }
+.custom th, td{
+	text-align: center;	
+	border: 1px solid black;
+	padding: 3px;
 }
-td.right {
-	text-align: right;
-}
-tr.footer {
-	background-color: #D2F1FD;
-}
+
+
