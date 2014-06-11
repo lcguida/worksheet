@@ -5,8 +5,8 @@ describe "Worksheet" do
 	it 'should print "No time entries found" when there\'s none' do
 		user = User.new
 		user.login = "user"
-		user.firstname = "User"
-		user.lastname = "Foo"
+		user.firstname = "Foo"
+		user.lastname = "Bar"
 		user.salt = Digest::SHA1.hexdigest("salt")
 		user.hashed_password = Digest::SHA1.hexdigest("#{user.salt}#{Digest::SHA1.hexdigest("password")}")
 		user.admin = false
