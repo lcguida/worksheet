@@ -12,8 +12,8 @@ describe "Worksheet" do
 		user.admin = false
 		user.save
 
-		post '/worksheet', {login: user.login, password: "password", from: "2014-05-01", to: "2014-05-10"}
+		post '/worksheet', {login: user.login, password: "password", from: "2014-05-01", to: "2014-05-10", user_login: user.login}
 		assert last_response.ok?, "request didn't responded OK"
-		assert last_response.body.include?("<h4> Não há registro de horas para o período especificado</h4>"), "response doesn't have 'no record found' message"
+		assert last_response.body.include?("<h4>Não há registro de horas para o período especificado</h4>"), "response doesn't have 'no record found' message"
 	end
 end
