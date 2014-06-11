@@ -24,4 +24,11 @@ describe "User" do
 	it "should authenticate" do
 		assert @user.authenticate("password"), "User wasn't authenticated"
 	end
+
+	it "should retrieve all users with a login" do
+		User.create(firstname: "No", lastname: "Login")
+		User.create(firstname: "Another", lastname: "User", login: "anotheruser")
+
+		assert User.get_all_users.size == 2, "User count should be 2"
+	end
 end
