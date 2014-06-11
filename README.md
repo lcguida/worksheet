@@ -1,23 +1,50 @@
 # WorkSheet #
 
+### What it is? ###
 
-
-
-### O que é ? ###
-
-Worksheet é uma pequeno servidor Sinatra com o intuito de centralizar as horas logadas em diferentes instâncias de Redmine.
+A little Sinatra app that centralizes logged time entries from different redmine isntances
 
 ### Como usar? ###
 
-* Baixe o projeto
-* Configure os banco de dados (MySQL) no arquivo config.yml
-* Modifique o código de acordo com a sua regra de LDAP
-* bundle install
-* Execute o servidor através do rackup:
-
+* Clone the project
 
 ```
-#!shell
-
-[$] bundle exec rackup -p $porta
+git clone https://github.com/lcguida/worksheet.git
 ```
+
+* `bundle isntall`
+
+* Create a `database.yml` file with at least one `'default'` database (pointing to a existing redmine database):
+
+```ruby
+#database.yml
+
+default:
+  adapter: "<mysql,postgres,sqlite>"
+  host: "<host>"
+  port: <port>
+  user: "<user>"
+  password: "<password>"
+  database: "<database>"
+  
+#Other databases:
+another-redmine:
+  adapter: "<mysql,postgres,sqlite>"
+  host: "<host>"
+  port: <port>
+  user: "<user>"
+  password: "<password>"
+  database: "<database>"
+
+```
+
+* Create a `config.yml` as following:
+
+```ruby
+#config.yml
+
+bind: <server_bind_address>
+
+```
+
+4. Execute: `bundle exec rackup -p <port>`

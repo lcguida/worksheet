@@ -43,10 +43,8 @@ post '/worksheet' do
 
 	@time_entries = []
 		if @user.authenticate(params[:password]) #TODO: Pesquisar como evitar SQL Injection no Sinatra
-			puts "#{@user.login} != #{user_login}: #{(@user.login != user_login).to_s}"
-			puts "AND: #{@user.admin.to_s}"
 			if @user.login == user_login || @user.admin
-				DataMapper::Repository.adapaters.keys.each do |repository|		
+				DataMapper::Repository.adapters.keys.each do |repository|		
 					DataMapper.repository(repository){ 
 						@time_entries += TimeEntry.get_users_time_entry(user_login, params[:from], params[:to]) 
 					}
