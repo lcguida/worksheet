@@ -1,3 +1,5 @@
+ENV['RACK_ENV'] = 'test'
+
 #Minitest
 require 'minitest/autorun'
 require 'minitest/pride'
