@@ -5,26 +5,13 @@ require "bundler/setup"
 
 #Carrega arquivos de configurações:
 config = YAML.load_file('config.yml')
-database = YAML.load_file('database.yml')
-repositories = []
 
 #Configurações do Sinatra
 set :server, %w[thin mongrel webrick]
 set :bind, config['bind'] ||= "localhost"
 
-#Descomentar para ativar log do banco de dados. 
-DataMapper::Logger.new($stdout, :debug)
-
-#Configura DataMappers com as informações do arquivo database.yml
-database.each { |database, configs| DataMapper.setup(database.to_sym, configs) }
-
-#Importa os models
-Dir.glob(File.expand_path("../models/*.rb", __FILE__)).each do |file|
-  require file
-end
-
-#Indica o fim da configuração do banco:
-DataMapper.finalize
+#Load Database Configuration
+require_relative "database_setup.rb"
 
 #Mapeamento das rotas
 get '/' do
@@ -33,7 +20,7 @@ get '/' do
 end
 
 post '/worksheet' do
-	#Formatação da Data
+	#Date Formatting
 	@to_date = DateTime.strptime(params[:to],'%Y-%m-%d').strftime('%d/%m/%Y')
 	@from_date = DateTime.strptime(params[:from],'%Y-%m-%d').strftime('%d/%m/%Y')
 

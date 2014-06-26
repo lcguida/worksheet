@@ -28,9 +28,6 @@ GEM
       dm-core (~> 1.2.0)
     dm-migrations (1.2.0)
       dm-core (~> 1.2.0)
-    dm-mysql-adapter (1.2.0)
-      dm-do-adapter (~> 1.2.0)
-      do_mysql (~> 0.10.6)
     dm-postgres-adapter (1.2.0)
       dm-do-adapter (~> 1.2.0)
       do_postgres (~> 0.10.6)
@@ -40,6 +37,9 @@ GEM
       json (~> 1.6)
       json_pure (~> 1.6)
       multi_json (~> 1.0)
+    dm-sqlite-adapter (1.2.0)
+      dm-do-adapter (~> 1.2.0)
+      do_sqlite3 (~> 0.10.6)
     dm-timestamps (1.2.0)
       dm-core (~> 1.2.0)
     dm-transactions (1.2.0)
@@ -54,9 +54,9 @@ GEM
       uuidtools (~> 2.1)
     dm-validations (1.2.0)
       dm-core (~> 1.2.0)
-    do_mysql (0.10.14)
-      data_objects (= 0.10.14)
     do_postgres (0.10.14)
+      data_objects (= 0.10.14)
+    do_sqlite3 (0.10.14)
       data_objects (= 0.10.14)
     fastercsv (1.5.5)
     json (1.8.1)
@@ -66,6 +66,8 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -79,7 +81,9 @@ PLATFORMS
 
 DEPENDENCIES
   data_mapper
-  dm-mysql-adapter
+  dm-migrations
   dm-postgres-adapter
+  dm-sqlite-adapter
   net-ldap
+  rack-test
   sinatra

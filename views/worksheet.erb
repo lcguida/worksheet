@@ -15,8 +15,12 @@
 <body>
 	<div class="large-12 large-centered columns" style="margin-top: 15px; text-align: center;">
 
-		<!-- Render Time Entries Table partial -->
-		<%= erb :time_entries_table %>
+		<% if @time_entries.empty? %>
+			<h4>Não há registro de horas para o período especificado</h4>
+		<% else %>
+			<!-- Render Time Entries Table partial -->
+			<%= erb :time_entries_table %>
+		<% end %>
 		
 	</div>
 </body>
