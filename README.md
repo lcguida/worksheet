@@ -1,6 +1,8 @@
 # WorkSheet #
 
-[![Build Status](https://travis-ci.org/lcguida/worksheet.svg?branch=master)](https://travis-ci.org/lcguida/worksheet) [![Coverage Status](https://img.shields.io/coveralls/lcguida/worksheet.svg)](https://coveralls.io/r/lcguida/worksheet)
+[![Build Status](https://travis-ci.org/lcguida/worksheet.svg?branch=master)](https://travis-ci.org/lcguida/worksheet)
+[![Coverage Status](https://img.shields.io/coveralls/lcguida/worksheet.svg)](https://coveralls.io/r/lcguida/worksheet)
+[![Dependency Status](https://gemnasium.com/lcguida/worksheet.png?travis)](https://gemnasium.com/lcguida/worksheet)
 
 ### What it is? ###
 
