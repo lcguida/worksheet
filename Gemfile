@@ -2,9 +2,11 @@ source "http://rubygems.org"
 
 gem 'sinatra'
 gem 'data_mapper'
-#gem 'dm-mysql-adapter'
-gem 'dm-postgres-adapter'
-gem 'net-ldap'
+# gem 'dm-postgres-adapter'
+
+group :production do
+	gem 'dm-postgres-adapter'
+end
 
 group :test do
 	gem 'dm-migrations'
