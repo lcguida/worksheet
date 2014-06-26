@@ -4,11 +4,11 @@ require 'data_mapper'
 require "bundler/setup"
 
 #Carrega arquivos de configurações:
-config = YAML.load_file('config.yml')
+config = YAML.load_file('config.yml') if File.exist?('config.yml')
 
 #Configurações do Sinatra
 set :server, %w[thin mongrel webrick]
-set :bind, config['bind'] ||= "localhost"
+set :bind, config ? config['bind'] : "localhost"
 
 #Load Database Configuration
 require_relative "database_setup.rb"

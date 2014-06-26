@@ -1,5 +1,5 @@
 #Load databsse configs
-database = YAML.load_file('database.yml')
+database = YAML.load_file('database.yml')  if File.exist?('database.yml')
 
 #Import Database Models
 Dir.glob(File.expand_path("../models/*.rb", __FILE__)).each do |file|
