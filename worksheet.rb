@@ -19,8 +19,7 @@ get '/' do
 	erb :index
 end
 
-post '/worksheet' do
-	#Date Formatting
+post '/worksheet' do	
 	@to_date = DateTime.strptime(params[:to],'%Y-%m-%d').strftime('%d/%m/%Y')
 	@from_date = DateTime.strptime(params[:from],'%Y-%m-%d').strftime('%d/%m/%Y')
 
@@ -39,7 +38,7 @@ post '/worksheet' do
 				erb :worksheet
 			else
 				params[:alert] = "Voc&ecirc; n&acirc; tem permiss&acirc;o para visualizar as horas do usu&agrave;io #{user_login}"
-				@users = User.get_all_users #TODO: Como posso redirecionar para '/' passando parametros
+				@users = User.get_all_users
 				erb :index
 			end
 		else
