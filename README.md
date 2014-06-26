@@ -1,5 +1,7 @@
 # WorkSheet #
 
+[![Build Status](https://travis-ci.org/lcguida/worksheet.svg?branch=master)](https://travis-ci.org/lcguida/worksheet)
+
 ### What it is? ###
 
 A little Sinatra app that centralizes logged time entries from different redmine isntances
