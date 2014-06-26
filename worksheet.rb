@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'sinatra'
 require 'data_mapper'
-require 'net/ldap'
 require "bundler/setup"
 
 #Carrega arquivos de configurações:
