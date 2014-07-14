@@ -1,0 +1,41 @@
+<% @users_time_entries.each do |user, time_entries| %>
+	<% user_total_hours = time_entries.inject(0){ |total, time_entry| total + time_entry.hours}%>
+	<div class="row">
+		<div class="large-12 large-centered columns"> 
+			<table>
+				<tr>
+					<td><b>Usuário:</b></td>
+					<td><%= user.name %></td>
+					<td><b>Total Horas:</b></td>
+					<td><%= user_total_hours %>&nbsp;hs</td>
+				</tr>
+			</table>
+			
+			<table class="custom">
+				<thead>
+					<tr>
+						<th>Projeto</th>
+						<th>Centro de Custo</th>
+						<th>Horas</th>
+						<th>Percentual</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					
+					<% time_entries.group_by { |te| te.project}.each do |project, project_time_entries| %>
+						<% project_total_hours = project_time_entries.inject(0){ |total, time_entry| total + time_entry.hours} %>
+						<tr>
+							<td><%= project.name %></td>
+							<td><%= project.centro_de_custo %></td>
+							<td><%= project_total_hours %>&nbsp;hs</td>
+							<td><%= ((project_total_hours.to_f/user_total_hours.to_f)*100).round(2) %>&nbsp;%</td>
+						</tr>
+					<% end %>	
+
+				</tbody>
+			</table>
+
+		<% end %>
+	</div>
+</div>

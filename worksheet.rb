@@ -73,7 +73,7 @@ post '/workload' do
 	puts "Time Entries Size: #{time_entries.size}"
 
 	#WorkLoad per user
-	@users_time_entries = time_entries.group_by { |te| te.user_id}
+	@users_time_entries = time_entries.group_by { |te| te.user}
 
 	#Total Workload
 	@total_workload = time_entries.inject(0){ |total, time_entry| total + time_entry.hours}

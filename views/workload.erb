@@ -18,7 +18,9 @@
 		<% if @users_time_entries.empty? %>
 			<h4>Não há registro de horas para o período especificado</h4>
 		<% else %>
+			<h3> Todos os projetos </h3>
 			<%= erb :total_workload_table %>
+			<h3> Por usuário </h3>
 			<%= erb :workloads_table %>
 		<% end %>
 

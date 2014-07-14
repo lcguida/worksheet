@@ -10,6 +10,7 @@ describe User do
 		@user.salt = Digest::SHA1.hexdigest("salt")
 		@user.hashed_password = Digest::SHA1.hexdigest("#{@user.salt}#{Digest::SHA1.hexdigest("password")}")
 		@user.admin = false
+		@user.type = "User"
 		@user.save
 	end
 
@@ -26,8 +27,8 @@ describe User do
 	end
 
 	it "should retrieve all users with a login" do
-		User.create(firstname: "No", lastname: "Login")
-		User.create(firstname: "Another", lastname: "User", login: "anotheruser")
+		User.create(firstname: "No", lastname: "Login", type: "User")
+		User.create(firstname: "Another", lastname: "User", login: "anotheruser", type: "User")
 
 		assert User.get_all_users.size == 2, "User count should be 2"
 	end
