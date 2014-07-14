@@ -10,7 +10,7 @@ end
 #DataMapper::Logger.new($stdout, :debug)
 
 #Configures production database(s)
-configure :production do
+configure :production, :development do
 	database.each { |database, configs| DataMapper.setup(database.to_sym, configs) }
 end
 

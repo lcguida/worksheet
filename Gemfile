@@ -9,6 +9,10 @@ group :production do
 	gem 'dm-postgres-adapter'
 end
 
+group :development do 
+	gem 'dm-mysql-adapter'
+end
+
 group :test do
 	gem 'dm-migrations'
 	gem 'rack-test'

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8"/>
+	<title>Worksheet</title>
+
+	<!-- Foundation -->
+	<link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/foundation.css">
+	<script src="js/vendor/modernizr.js"></script>
+
+</head>
+<body>
+	<div class="large-4 large-centered columns" style="margin-top: 30px;">
+		<!-- Alerts -->
+		<% if params[:alert] %>
+			<div data-alert class="alert-box alert round">
+			  	<%= params[:alert] %>
+			  <a href="#" class="close">&times;</a>
+			</div>
+		<% end %>
+
+		<!-- Form -->
+		<form class="custom" action="/workload" method="post">
+
+			<div class="row">
+				<div class="large-12 columns">
+					<label> Grupo: 
+						<select name="group_id">
+							<% @groups.each do |group| %>
+								<option value="<%= group.id %>"><%= group.lastname %></option>
+							<% end %>
+						</select>
+					</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="large-6 columns">
+					<label> De: 
+						<input type="date" name="from" required>
+					</label>	
+				</div>
+				
+				<div class="large-6 columns">
+					<label> At&eacute;: 
+						<input type="date" name="to" required>
+					</label>	
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="large-6 large-centered columns">					
+					<button type="submit" class="nice blue radius button">Gerar Planilha</button>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</body>
